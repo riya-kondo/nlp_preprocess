@@ -3,7 +3,7 @@ preprocessing for nlp
 
 # making_dict.py
 you need to execute this commend before using making_dict.py
-pip install gensim
+>pip install gensim
 
 # utils.py
 you need to install MeCab on your PC.
