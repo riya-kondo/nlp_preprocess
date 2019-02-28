@@ -4,8 +4,30 @@ import MeCab
 
 class splitter():
     def __init__(self, dic_path=''):
+        return
+
+    def _split_sentence(self, text, parts, to_stem=False):
+        raise NotImplementedError
+
+    def words(self, text, parts=[]):
+        '''
+        text: 形態素解析をする文(文書の場合等はfor文で呼び出す)
+        parts: 抜き出す品詞
+        to_stem: 単語をそのまま入れるか,語幹に変換するか
+        '''
+        words = self._split_sentence(text=text, parts=parts, to_stem=False)
+        return words
+
+    def stems(self, text, parts=[]):
+        stems = self._split_sentence(text=text, parts=parts, to_stem=True)
+        return stems
+
+
+class ja_splitter(splitter):
+    def __init__(splitter, self, dic_path=''):
+        super.__init__()
         if dic_path:
-            self.tagger = MeCab.Tagger('mecabrc -d' + dic_path)
+            self.tagger = MeCab.Tagger('mecabrc -d ' + dic_path)
         else:
             self.tagger = MeCab.Tagger('mecabrc')
 
@@ -41,19 +63,6 @@ class splitter():
             words.append(info_elems[0][:-3])
             words = [x.replace("\t", "") for x in words]
         return words
-
-    def words(self, text, parts=[]):
-        '''
-        text: 形態素解析をする文(文書の場合等はfor文で呼び出す)
-        parts: 抜き出す品詞
-        to_stem: 単語をそのまま入れるか,語幹に変換するか
-        '''
-        words = self._split_sentence(text=text, parts=parts, to_stem=False)
-        return words
-
-    def stems(self, text, parts=[]):
-        stems = self._split_sentence(text=text, parts=parts, to_stem=True)
-        return stems
 
 
 if __name__ == '__main__':
