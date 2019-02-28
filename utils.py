@@ -24,8 +24,8 @@ class splitter():
 
 
 class ja_splitter(splitter):
-    def __init__(splitter, self, dic_path=''):
-        super.__init__()
+    def __init__(self, dic_path=''):
+        super(ja_splitter, self).__init__()
         if dic_path:
             self.tagger = MeCab.Tagger('mecabrc -d ' + dic_path)
         else:
@@ -66,7 +66,7 @@ class ja_splitter(splitter):
 
 
 if __name__ == '__main__':
-    split = splitter()
+    split = ja_splitter()
     doc = "これから始まる私の伝説"
     doc = split.words(doc)
     print(doc)
