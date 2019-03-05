@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+import argparse
 import MeCab
-
+import nltk
 
 class splitter():
     def __init__(self, dic_path=''):
@@ -65,8 +66,32 @@ class ja_splitter(splitter):
         return words
 
 
+class en_splitter(splitter):
+    def __init__(self):
+        super(en_splitter, self).__init__()
+    
+    def _split_sentence(self, text, parts, to_stem=False):
+        words = []
+        if to_stem:
+            pass
+        else:
+            info_of_words = nltk.word_tokenize(text)
+        for w in info_of_words:
+            w = w.lower()
+            words.append(w)
+        return words
+
 if __name__ == '__main__':
-    split = ja_splitter()
-    doc = "これから始まる私の伝説"
-    doc = split.words(doc)
-    print(doc)
+    parser = argparse.ArgumentParser(description="日本語と英語用の事前処理機")
+    parser.add_argument('-m', '--mode', default='ja', choices=['ja', 'en'],  help='モード(ja:日本, en:英語)')
+    parser.add_argument('--dict', default='',  help='日本語モードで必要。Mecabの辞書。')
+    arg = parser.parse_args()
+    if arg.mode=='ja':
+        spl = ja_splitter(arg.dict)
+        text = input("input japanese sentence: ")
+    else:
+        spl = en_splitter()
+        text = input("input english sentence: ")
+    
+    word_list = spl.words(text)
+    print(word_list)
