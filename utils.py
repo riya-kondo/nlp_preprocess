@@ -2,6 +2,7 @@
 import argparse
 import MeCab
 import nltk
+from nltk import stem
 
 class splitter():
     def __init__(self, dic_path=''):
@@ -71,14 +72,18 @@ class en_splitter(splitter):
         super(en_splitter, self).__init__()
     
     def _split_sentence(self, text, parts, to_stem=False):
+        info_of_words = nltk.word_tokenize(text)
         words = []
         if to_stem:
-            pass
+            stemmer = stem.WordNetLemmatizer()
+            for w in info_of_words:
+                w = w.lower()
+                w = stemmer.lemmatize(w)
+                words.append(w)
         else:
-            info_of_words = nltk.word_tokenize(text)
-        for w in info_of_words:
-            w = w.lower()
-            words.append(w)
+            for w in info_of_words:
+                w = w.lower()
+                words.append(w)
         return words
 
 if __name__ == '__main__':
@@ -94,4 +99,6 @@ if __name__ == '__main__':
         text = input("input english sentence: ")
     
     word_list = spl.words(text)
+    stem_list = spl.stems(text)
     print(word_list)
+    print(stem_list)
